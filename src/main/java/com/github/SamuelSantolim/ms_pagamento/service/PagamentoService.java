@@ -3,13 +3,13 @@ package com.github.SamuelSantolim.ms_pagamento.service;
 import com.github.SamuelSantolim.ms_pagamento.dto.PagamentoDTO;
 import com.github.SamuelSantolim.ms_pagamento.entity.Pagamento;
 import com.github.SamuelSantolim.ms_pagamento.entity.Status;
-import com.github.SamuelSantolim.ms_pagamento.exceptions.ResourceNotFoundException;
+import com.github.SamuelSantolim.ms_pagamento.service.exceptions.ResourceNotFoundException;
 import com.github.SamuelSantolim.ms_pagamento.repository.PagamentoRepository;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -50,7 +50,19 @@ public class PagamentoService {
         entity.setStatus(dto.getStatus());
         entity.setPedidoId(dto.getPedidoId());
         entity.setFormaDePagamentoId(dto.getFormaDePagamentoId());
+    }
 
+    @Transactional
+    public PagamentoDTO updatePagamento(Long id, PagamentoDTO dto){
+        try{
+            Pagamento entity = repository.getReferenceById(id);
+            copyDtoToEntity(dto,entity);
+            entity.setStatus(dto.getStatus());
+            entity = repository.save(entity);
+        }catch(EntityNotFoundException e){
+            throw new ResourceNotFoundException("Recurso não encontrado. ID: "+ id);
+
+        }
     }
 
 
