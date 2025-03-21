@@ -33,7 +33,7 @@ public class Pagamento {
     @Column(nullable = false)
     private Long pedidoId;
     @Column(nullable = false)
-    private Long formaDePagamento;
+    private Long formaDePagamentoId;
 
 
 }
