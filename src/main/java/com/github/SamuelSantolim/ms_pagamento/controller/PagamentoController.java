@@ -3,6 +3,7 @@ package com.github.SamuelSantolim.ms_pagamento.controller;
 import com.github.SamuelSantolim.ms_pagamento.dto.PagamentoDTO;
 import com.github.SamuelSantolim.ms_pagamento.service.PagamentoService;
 import jakarta.validation.Valid;
+import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -39,6 +40,11 @@ public class PagamentoController {
                 .buildAndExpand(dto.getId())
                 .toUri();
         return ResponseEntity.created(uri).body(dto);
+    }
+    @PutMapping("/{id}")
+    public ResponseEntity<PagamentoDTO> update(@PathVariable Long id, @RequestBody @Valid PagamentoDTO dto){
+        dto = service.updatePagamento(id,dto);
+        return ResponseEntity.ok(dto);
     }
 
 
